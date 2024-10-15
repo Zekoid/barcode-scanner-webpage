@@ -80,3 +80,12 @@ table thead, table tbody tr {
   width: 100%;
   table-layout: fixed;
 }
+
+.barcode {
+  margin: 10px 0;
+}
+
+#login-message {
+  margin-top: 10px;
+  color: green; /* Change to red for error messages if needed */
+}

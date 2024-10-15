@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Sof-Secure-System7</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -12,14 +22,19 @@
 
   <div class="tab-container">
     <button class="tab-button" onclick="showTab(1)">Welcome</button>
-    <button class="tab-button" onclick="showTab(2)">Camera & User Status</button>
-    <button class="tab-button" onclick="showTab(3)">Barcode Logs</button>
+    <button class="tab-button" id="camera-status-tab" onclick="showTab(2)" disabled>Camera & User Status</button>
+    <button class="tab-button" id="scan-logs-tab" onclick="showTab(3)" disabled>Barcode Logs</button>
+    <button class="tab-button" id="barcode-images-tab" onclick="showTab(4)" disabled>Barcode Images</button> <!-- New Tab -->
   </div>
 
   <!-- Tab 1: Welcome Page -->
   <div id="tab-1" class="tab-content">
     <h1>Welcome to the Barcode Scanner System</h1>
-    <p>This is the welcome page. You can add more information here later.</p>
+    <p>Please log in to access the system:</p>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="login-button">Login</button>
+    <div id="login-message"></div>
   </div>
 
   <!-- Tab 2: Camera and User Status -->
@@ -60,6 +75,17 @@
     </table>
   </div>
 
+  <!-- Tab 4: Barcode Images -->
+  <div id="tab-4" class="tab-content" style="display: none;">
+    <h2>Generated Barcode Images</h2>
+    <div id="barcode-images"></div> <!-- Container for barcode images -->
+  </div>
+
   <script src="script.js"></script>
+</body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
 </body>
 </html>

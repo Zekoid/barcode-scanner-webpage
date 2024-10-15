@@ -1,11 +1,23 @@
-// 50 blank user accounts with automatically assigned barcodes
-const users = Array.from({ length: 50 }, (_, i) => ({
-  name: `User ${i + 1}`,
-  barcode: (100000000 + i).toString(), // Assign barcodes from 100000000 onwards
-  status: "out",
-  lastScanned: null // Stores the last scanned time/date
-}));
+// User credentials
+const USERNAME = 'Sof-security';
+const PASSWORD = 'Password1'; // Updated password
 
+// Load user data from localStorage or create new users
+const loadUsers = () => {
+  const savedUsers = localStorage.getItem('users');
+  if (savedUsers) {
+    return JSON.parse(savedUsers);
+  } else {
+    return Array.from({ length: 100 }, (_, i) => ({
+      name: `User ${i + 1}`,
+      barcode: (100000000 + i).toString(), // Assign barcodes from 100000000 onwards
+      status: "out",
+      lastScanned: null // Stores the last scanned time/date
+    }));
+  }
+};
+
+const users = loadUsers(); // Load or create users
 let scannerActive = false;
 let scanLogs = [];
 
@@ -74,6 +86,7 @@ function updateUserStatus(barcode) {
     alert(`${user.name} is now ${user.status} at ${now}`);
     displayUserStatuses(); // Refresh the user status display
     displayScanLogs(); // Refresh the scan logs
+    saveUsers(); // Save updated user data
   } else {
     alert("User not found.");
   }
@@ -93,6 +106,7 @@ function displayUserStatuses() {
     userNameInput.value = user.name;
     userNameInput.addEventListener('input', (e) => {
       users[index].name = e.target.value; // Update user name dynamically
+      saveUsers(); // Save updated user data
     });
 
     const statusText = `Status: ${user.status}`;
@@ -134,7 +148,7 @@ function displayScanLogs() {
 
 // Generate barcodes for each user and display them
 function generateBarcodes() {
-  const barcodeGeneratorDiv = document.getElementById('barcode-generator');
+  const barcodeGeneratorDiv = document.getElementById('barcode-images');
   barcodeGeneratorDiv.innerHTML = ''; // Clear existing content
 
   users.forEach(user => {
@@ -142,16 +156,44 @@ function generateBarcodes() {
     barcodeDiv.className = 'barcode';
 
     const barcodeCanvas = document.createElement('canvas');
-    JsBarcode(barcodeCanvas, user.barcode, { format: "CODE128" });
+    JsBarcode(barcodeCanvas, user.barcode, { format: "CODE128" }); // Generate barcode
 
-    const userLabel = document.createElement('div');
-    userLabel.textContent = `${user.name} - Barcode: ${user.barcode}`;
+    const userLabel = document.createElement('label');
+    userLabel.textContent = `${user.name} - ${user.barcode}`;
 
     barcodeDiv.appendChild(barcodeCanvas);
     barcodeDiv.appendChild(userLabel);
     barcodeGeneratorDiv.appendChild(barcodeDiv);
   });
 }
+
+// Save users to localStorage
+const saveUsers = () => {
+  localStorage.setItem('users', JSON.stringify(users));
+};
+
+// Start the camera and generate barcodes on page load
+window.onload = function () {
+  generateBarcodes();
+  displayUserStatuses();
+  displayScanLogs();
+};
+
+// Handle login button click event
+document.getElementById('login-button').addEventListener('click', function () {
+  const usernameInput = document.getElementById('username').value;
+  const passwordInput = document.getElementById('password').value;
+  
+  if (usernameInput === USERNAME && passwordInput === PASSWORD) {
+    document.getElementById('login-message').innerText = "Login successful!"; // Display success message
+    showTab(2); // Show the camera and user status tab
+    document.getElementById('camera-status-tab').disabled = false; // Enable Camera & User Status tab
+    document.getElementById('scan-logs-tab').disabled = false; // Enable Scan Logs tab
+    document.getElementById('barcode-images-tab').disabled = false; // Enable Barcode Images tab
+  } else {
+    document.getElementById('login-message').innerText = "Incorrect username or password. Please try again."; // Notify on failed login
+  }
+});
 
 // Handle tab navigation
 function showTab(tabIndex) {
@@ -161,10 +203,3 @@ function showTab(tabIndex) {
   }
   document.getElementById(`tab-${tabIndex}`).style.display = 'block'; // Show selected tab
 }
-
-// Start the camera and generate barcodes on page load
-window.onload = function () {
-  generateBarcodes();
-  displayUserStatuses();
-  displayScanLogs();
-};
