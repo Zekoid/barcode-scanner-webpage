@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barcode Scanner with Tabs</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
+</head>
+<body>
+
+  <div class="tab-container">
+    <button class="tab-button" onclick="showTab(1)">Welcome</button>
+    <button class="tab-button" onclick="showTab(2)">Camera & User Status</button>
+    <button class="tab-button" onclick="showTab(3)">Barcode Logs</button>
+  </div>
+
+  <!-- Tab 1: Welcome Page -->
+  <div id="tab-1" class="tab-content">
+    <h1>Welcome to the Barcode Scanner System</h1>
+    <p>This is the welcome page. You can add more information here later.</p>
+  </div>
+
+  <!-- Tab 2: Camera and User Status -->
+  <div id="tab-2" class="tab-content" style="display: none;">
+    <div class="camera-user-container">
+      <!-- Camera Section -->
+      <div class="camera-section">
+        <button id="toggle-scanner">Start Camera</button>
+        <div id="scanner-container"></div>
+        <div id="barcode-result">
+          Scanned Barcode: <span id="barcode-output"></span>
+        </div>
+      </div>
+
+      <!-- User Status Section -->
+      <div class="user-status-section">
+        <h2>User Status and Names</h2>
+        <div id="user-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Barcode Logs -->
+  <div id="tab-3" class="tab-content" style="display: none;">
+    <h2>Barcode Scan Logs</h2>
+    <table id="scan-logs-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Barcode</th>
+          <th>Status</th>
+          <th>Date/Time</th>
+        </tr>
+      </thead>
+      <tbody id="scan-logs-body">
+        <!-- Scan logs will appear here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
